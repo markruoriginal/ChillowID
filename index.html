@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChillowID - Регистрация</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#0d0d0d;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    color:white;
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:380px;
+    background:#151515;
+    padding:30px;
+    border-radius:16px;
+    border:1px solid #262626;
+    box-shadow:0 0 30px rgba(0,0,0,0.5);
+}
+
+.logo{
+    text-align:center;
+    font-size:32px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#999;
+    margin-bottom:25px;
+    font-size:14px;
+}
+
+.input-group{
+    margin-bottom:16px;
+}
+
+label{
+    display:block;
+    margin-bottom:6px;
+    color:#bbb;
+    font-size:14px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border:none;
+    outline:none;
+    border-radius:10px;
+    background:#202020;
+    color:white;
+    border:1px solid #2d2d2d;
+    font-size:14px;
+}
+
+input:focus{
+    border-color:#5865f2;
+}
+
+button{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:10px;
+    background:#5865f2;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+button:hover{
+    background:#4752c4;
+}
+
+.guest-btn{
+    margin-top:12px;
+    background:#222;
+    border:1px solid #333;
+}
+
+.guest-btn:hover{
+    background:#2a2a2a;
+}
+
+.error-message{
+    color:#ff5f5f;
+    font-size:12px;
+    margin-top:5px;
+    display:none;
+}
+
+.bottom-text{
+    margin-top:20px;
+    text-align:center;
+    color:#999;
+    font-size:14px;
+}
+
+.bottom-text a{
+    color:#5865f2;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+.bottom-text a:hover{
+    text-decoration:underline;
+}
+
+.policy-link{
+    text-align:center;
+    margin-top:14px;
+    font-size:13px;
+    color:#777;
+    cursor:pointer;
+}
+
+.policy-box{
+    display:none;
+    margin-top:16px;
+    background:#111;
+    border:1px solid #262626;
+    border-radius:12px;
+    padding:14px;
+    color:#8f8f8f;
+    font-size:12px;
+    line-height:1.6;
+}
+
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.75);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+
+.modal-box{
+    width:300px;
+    background:#181818;
+    padding:25px;
+    border-radius:14px;
+    border:1px solid #2c2c2c;
+}
+
+.fake-error{
+    color:#ff5f5f;
+    font-size:13px;
+    margin-top:10px;
+    text-align:center;
+    display:none;
+}
+
+.captcha-question{
+    margin:15px 0;
+    background:#202020;
+    padding:12px;
+    border-radius:10px;
+    text-align:center;
+    font-size:22px;
+    letter-spacing:3px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">ChillowID</div>
+
+    <div class="subtitle">
+        Создание нового аккаунта
+    </div>
+
+    <form id="registerForm">
+
+        <div class="input-group">
+            <label>Имя пользователя</label>
+            <input type="text" id="username">
+            <div class="error-message" id="usernameError">
+                Минимум 3 символа
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="email">
+            <div class="error-message" id="emailError">
+                Неверный email
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Пароль</label>
+            <input type="password" id="password">
+            <div class="error-message" id="passwordError">
+                Минимум 6 символов
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Повторите пароль</label>
+            <input type="password" id="confirmPassword">
+            <div class="error-message" id="confirmPasswordError">
+                Пароли не совпадают
+            </div>
+        </div>
+
+        <button type="submit">
+            Зарегистрироваться
+        </button>
+
+        <button type="button"
+                class="guest-btn"
+                id="guestLoginBtn">
+            Войти как гость
+        </button>
+
+        <div class="policy-link" id="togglePolicy">
+            Продолжая, вы принимаете условия использования ChillowID
+        </div>
+
+        <div class="policy-box" id="policyBox">
+
+            <b style="color:white;">
+                Условия конфиденциальности
+            </b>
+
+            <br><br>
+
+            Данная форма в разработке.
+
+            <br><br>
+
+            Введённые данные не сохраняются, не отправляются рекламодателям
+            и автоматически удаляются после 5 мес.
+
+            <br><br>
+
+            ChillowID не использует cookie.ЭТО НЕ Является реальным сайтом chillow!!!! все права принадлежат t.me/chillow это фан сайт!!!
+
+        </div>
+
+    </form>
+
+    <div class="bottom-text">
+        Есть аккаунт?
+        <a id="openLogin">Войти</a>
+    </div>
+
+</div>
+
+<!-- CAPTCHA -->
+
+<div class="modal-overlay" id="captchaModal">
+
+    <div class="modal-box">
+
+        <h2 style="text-align:center;">
+            Проверка
+        </h2>
+
+        <p style="
+        color:#999;
+        text-align:center;
+        margin-top:10px;
+        ">
+            Подтвердите что вы человек
+        </p>
+
+        <div class="captcha-question" id="captchaQuestion">
+            2 + 2 = ?
+        </div>
+
+        <input type="number"
+               id="captchaInput"
+               placeholder="Ответ">
+
+        <div class="error-message"
+             id="captchaError"
+             style="margin-top:10px;">
+            Неверный ответ
+        </div>
+
+        <button id="verifyCaptchaBtn"
+                style="margin-top:15px;">
+            Подтвердить
+        </button>
+
+    </div>
+
+</div>
+
+<!-- LOGIN -->
+
+<div class="modal-overlay" id="loginModal">
+
+    <div class="modal-box">
+
+        <div class="logo" style="font-size:26px;">
+            ChillowID
+        </div>
+
+        <div class="input-group">
+            <label>Логин</label>
+            <input type="text">
+        </div>
+
+        <div class="input-group">
+            <label>Пароль</label>
+            <input type="password">
+        </div>
+
+        <button id="loginBtn">
+            Войти
+        </button>
+
+        <div class="fake-error" id="loginError">
+            Неправильный логин или пароль
+        </div>
+
+        <div style="
+        text-align:center;
+        margin-top:14px;
+        font-size:13px;
+        ">
+            <a id="forgotPasswordBtn"
+               style="
+               color:#5865f2;
+               cursor:pointer;
+               text-decoration:none;
+               ">
+                Забыли пароль?
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- RESET PASSWORD -->
+
+<div class="modal-overlay" id="resetModal">
+
+    <div class="modal-box">
+
+        <div id="resetStep1">
+
+            <div class="logo" style="font-size:24px;">
+                Восстановление
+            </div>
+
+            <p style="
+            color:#999;
+            text-align:center;
+            margin-bottom:18px;
+            font-size:13px;
+            ">
+                Введите email для восстановления
+            </p>
+
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="resetEmail">
+            </div>
+
+            <button id="sendResetBtn">
+                Отправить письмо
+            </button>
+
+        </div>
+
+        <div id="resetStep2" style="display:none;">
+
+            <div class="logo" style="font-size:24px;">
+                Ошибка
+            </div>
+
+            <p style="
+            color:#aaa;
+            text-align:center;
+            line-height:1.5;
+            margin-top:12px;
+            ">
+                Не удалось отправить письмо восстановления.
+                <br><br>
+                Попробуйте ещё раз.
+            </p>
+
+            <button id="tryAnotherMethodBtn"
+                    style="margin-top:20px;">
+                Попробовать ещё
+            </button>
+
+        </div>
+
+        <div id="resetStep3" style="display:none;">
+
+            <div class="logo" style="font-size:24px;">
+                Новый пароль
+            </div>
+
+            <p style="
+            color:#999;
+            text-align:center;
+            margin-bottom:18px;
+            font-size:13px;
+            ">
+                Создайте новый пароль
+            </p>
+
+            <div class="input-group">
+                <label>Новый пароль</label>
+                <input type="password" id="newPassword">
+            </div>
+
+            <div class="input-group">
+                <label>Повторите пароль</label>
+                <input type="password" id="repeatNewPassword">
+            </div>
+
+            <div class="error-message"
+                 id="resetPasswordError"
+                 style="margin-bottom:10px;">
+                Пароли не совпадают
+            </div>
+
+            <button id="saveNewPasswordBtn">
+                Изменить пароль
+            </button>
+
+        </div>
+
+        <div id="resetStep4" style="display:none;">
+
+            <div class="logo" style="font-size:24px;">
+                Успешно
+            </div>
+
+            <p style="
+            color:#aaa;
+            text-align:center;
+            line-height:1.5;
+            margin-top:15px;
+            ">
+                Пароль успешно изменён.
+                <br><br>
+                Ожидание ответа от ChillowID...
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- GUEST LOGIN -->
+
+<div class="modal-overlay" id="guestModal">
+
+    <div class="modal-box">
+
+        <div class="logo" style="font-size:24px;">
+            Гостевой режим
+        </div>
+
+        <p style="
+        color:#aaa;
+        text-align:center;
+        line-height:1.6;
+        margin-top:14px;
+        ">
+            ВНИМАНИЕ! Вам будут недоступны некоторые
+            функции ChillowID.
+            <br><br>
+            Продолжить?
+        </p>
+
+        <button id="continueGuestBtn"
+                style="margin-top:20px;">
+            Продолжить
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+const targetUrl =
+'https://markruoriginal.github.io/StandChillow/';
+
+let captchaAnswer = 0;
+
+function generateCaptcha(){
+
+    const num1 = Math.floor(Math.random()*10)+1;
+    const num2 = Math.floor(Math.random()*10)+1;
+
+    captchaAnswer = num1 + num2;
+
+    document.getElementById('captchaQuestion')
+    .innerText = `${num1} + ${num2} = ?`;
+
+}
+
+document.getElementById('registerForm')
+.addEventListener('submit',function(e){
+
+    e.preventDefault();
+
+    let valid = true;
+
+    const username =
+    document.getElementById('username').value.trim();
+
+    const email =
+    document.getElementById('email').value.trim();
+
+    const password =
+    document.getElementById('password').value;
+
+    const confirmPassword =
+    document.getElementById('confirmPassword').value;
+
+    document.querySelectorAll('.error-message')
+    .forEach(el=>el.style.display='none');
+
+    if(username.length < 3){
+        document.getElementById('usernameError')
+        .style.display='block';
+        valid = false;
+    }
+
+    const emailRegex =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(!emailRegex.test(email)){
+        document.getElementById('emailError')
+        .style.display='block';
+        valid = false;
+    }
+
+    if(password.length < 6){
+        document.getElementById('passwordError')
+        .style.display='block';
+        valid = false;
+    }
+
+    if(password !== confirmPassword){
+        document.getElementById('confirmPasswordError')
+        .style.display='block';
+        valid = false;
+    }
+
+    if(valid){
+
+        generateCaptcha();
+
+        document.getElementById('captchaModal')
+        .style.display='flex';
+
+    }
+
+});
+
+document.getElementById('verifyCaptchaBtn')
+.addEventListener('click',function(){
+
+    const answer = parseInt(
+    document.getElementById('captchaInput').value
+    );
+
+    if(answer === captchaAnswer){
+
+        this.innerText = 'Перенаправление...';
+        this.disabled = true;
+
+        setTimeout(()=>{
+
+            window.location.href = targetUrl;
+
+        },1000);
+
+    }else{
+
+        document.getElementById('captchaError')
+        .style.display='block';
+
+        setTimeout(generateCaptcha,500);
+
+    }
+
+});
+
+document.getElementById('guestLoginBtn')
+.addEventListener('click',function(){
+
+    document.getElementById('guestModal')
+    .style.display='flex';
+
+});
+
+document.getElementById('continueGuestBtn')
+.addEventListener('click',function(){
+
+    this.innerText = 'Переход...';
+    this.disabled = true;
+
+    setTimeout(()=>{
+
+        window.location.href = targetUrl;
+
+    },1000);
+
+});
+
+document.getElementById('openLogin')
+.addEventListener('click',function(){
+
+    document.getElementById('loginModal')
+    .style.display='flex';
+
+});
+
+document.getElementById('loginBtn')
+.addEventListener('click',function(){
+
+    document.getElementById('loginError')
+    .style.display='block';
+
+});
+
+document.getElementById('togglePolicy')
+.addEventListener('click',function(){
+
+    const box =
+    document.getElementById('policyBox');
+
+    if(box.style.display === 'block'){
+        box.style.display = 'none';
+    }else{
+        box.style.display = 'block';
+    }
+
+});
+
+document.getElementById('forgotPasswordBtn')
+.addEventListener('click',function(){
+
+    document.getElementById('resetModal')
+    .style.display='flex';
+
+});
+
+document.getElementById('sendResetBtn')
+.addEventListener('click',function(){
+
+    this.innerText = 'Отправка...';
+    this.disabled = true;
+
+    setTimeout(()=>{
+
+        document.getElementById('resetStep1')
+        .style.display='none';
+
+        document.getElementById('resetStep2')
+        .style.display='block';
+
+    },1500);
+
+});
+
+document.getElementById('tryAnotherMethodBtn')
+.addEventListener('click',function(){
+
+    document.getElementById('resetStep2')
+    .style.display='none';
+
+    document.getElementById('resetStep3')
+    .style.display='block';
+
+});
+
+document.getElementById('saveNewPasswordBtn')
+.addEventListener('click',function(){
+
+    const pass1 =
+    document.getElementById('newPassword').value;
+
+    const pass2 =
+    document.getElementById('repeatNewPassword').value;
+
+    if(pass1 !== pass2 || pass1.length < 4){
+
+        document.getElementById('resetPasswordError')
+        .style.display='block';
+
+        return;
+    }
+
+    document.getElementById('resetPasswordError')
+    .style.display='none';
+
+    document.getElementById('resetStep3')
+    .style.display='none';
+
+    document.getElementById('resetStep4')
+    .style.display='block';
+
+    setTimeout(()=>{
+
+        document.getElementById('resetModal')
+        .style.display='none';
+
+        document.getElementById('loginModal')
+        .style.display='none';
+
+        document.getElementById('resetStep1')
+        .style.display='block';
+
+        document.getElementById('resetStep2')
+        .style.display='none';
+
+        document.getElementById('resetStep3')
+        .style.display='none';
+
+        document.getElementById('resetStep4')
+        .style.display='none';
+
+    },2000);
+
+});
+
+window.addEventListener('click',function(e){
+
+    const captchaModal =
+    document.getElementById('captchaModal');
+
+    const loginModal =
+    document.getElementById('loginModal');
+
+    const resetModal =
+    document.getElementById('resetModal');
+
+    const guestModal =
+    document.getElementById('guestModal');
+
+    if(e.target === captchaModal){
+        captchaModal.style.display='none';
+    }
+
+    if(e.target === loginModal){
+        loginModal.style.display='none';
+    }
+
+    if(e.target === resetModal){
+        resetModal.style.display='none';
+    }
+
+    if(e.target === guestModal){
+        guestModal.style.display='none';
+    }
+
+});
+
+</script>
+
+</body>
+</html>
